@@ -10,7 +10,7 @@ function confirmUpper(req, res, next) {
     } else {
         res.status(400).json({ message: 'The user name must be in all caps.' });
     }
-}
+} 
 
 // GET - retrieve all users
 router.get('/', async (req, res) => {
