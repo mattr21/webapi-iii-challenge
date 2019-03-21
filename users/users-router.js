@@ -4,6 +4,14 @@ const userDB = require('./userDb.js');
 
 const router = express.Router();
 
+function confirmUpper(req, res, next) {
+    if (req.body.name === req.body.name.toUpperCase()) {
+        next();
+    } else {
+        res.status(400).json({ message: 'The user name must be in all caps.' });
+    }
+}
+
 // GET - retrieve all users
 router.get('/', async (req, res) => {
     try {
@@ -44,7 +52,7 @@ router.get('/:id/posts', async (req, res) => {
 });
 
 // POST - add new user
-router.post('/', async (req, res) => {
+router.post('/', confirmUpper, async (req, res) => {
     try {
         const user = await userDB.insert(req.body);
 
@@ -72,7 +80,7 @@ router.delete('/:id', async (req, res) => {
 });
 
 // PUT - change user
-router.put('/:id', async (req, res) => {
+router.put('/:id', confirmUpper, async (req, res) => {
     try {
         const user = await userDB.update(req.params.id, req.body);
 
