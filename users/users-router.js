@@ -31,6 +31,18 @@ router.get('/:id', async (req, res) => {
     }
 });
 
+// GET - retrieve specific user's posts
+router.get('/:id/posts', async (req, res) => {
+    try {
+        const posts = await userDB.getUserPosts(req.params.id);
+
+        res.status(200).json(posts);
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: 'Error getting the posts for the user.' })
+    }
+});
+
 // POST - add new user
 router.post('/', async (req, res) => {
     try {
@@ -63,7 +75,7 @@ router.delete('/:id', async (req, res) => {
 router.put('/:id', async (req, res) => {
     try {
         const user = await userDB.update(req.params.id, req.body);
-        
+
         if (user) {
             res.status(200).json(user);
         } else {
